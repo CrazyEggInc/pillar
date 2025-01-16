@@ -67,7 +67,7 @@ defmodule Pillar.TypeConvert.ToClickhouseJson do
   end
 
   def convert(param, db_version, query_options) when is_map(param) do
-    json = Jason.encode!(param)
+    json = JSON.encode!(param)
     convert(json, db_version, query_options)
   end
 

@@ -42,7 +42,7 @@ defmodule Pillar.QueryBuilder do
       "INSERT INTO",
       table_name,
       "FORMAT JSONEachRow",
-      Enum.join(Enum.map(records, &Jason.encode!/1), " ")
+      Enum.map_join(records, " ", &JSON.encode!/1)
     ]
 
     Enum.join(sql_strings, "\n")

@@ -12,7 +12,11 @@ defmodule Pillar.MigrationsMacro do
   ```
   """
 
+  # credo:disable-for-next-line Credo.Check.Refactor.CyclomaticComplexity
   defmacro __using__(args) when is_list(args) do
+    path_prefix = Keyword.get(args, :path_prefix)
+    otp_app = Keyword.get(args, :otp_app)
+
     quote do
       alias Pillar.Connection
       alias Pillar.Migrations.Generator
@@ -56,18 +60,11 @@ defmodule Pillar.MigrationsMacro do
       end
 
       defp get_path_prefix do
-        case Keyword.get(unquote(args), :path_prefix) do
-          nil ->
-            case Keyword.get(unquote(args), :otp_app) do
-              nil ->
-                ""
-
-              otp_app when is_atom(otp_app) ->
-                Application.app_dir(otp_app)
-            end
-
-          path_prefix when is_binary(path_prefix) ->
-            path_prefix
+        cond do
+          is_binary(unquote(path_prefix)) -> unquote(path_prefix)
+          is_nil(unquote(otp_app)) -> ""
+          is_atom(unquote(otp_app)) -> Application.app_dir(unquote(otp_app))
+          :otherwise -> ""
         end
       end
     end

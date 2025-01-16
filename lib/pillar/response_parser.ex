@@ -9,7 +9,7 @@ defmodule Pillar.ResponseParser do
   end
 
   def parse(%Response{status_code: 200, body: body}) do
-    {atom, result} = Jason.decode(body)
+    {atom, result} = JSON.decode(body)
 
     cond do
       atom == :ok && is_map(result) ->
@@ -19,10 +19,10 @@ defmodule Pillar.ResponseParser do
       atom == :ok ->
         {:ok, result}
 
-      %Jason.DecodeError{data: data} = result ->
-        {:ok, data}
+      atom == :error ->
+        {:ok, body}
 
-      true ->
+      :otherwise ->
         {:ok, result}
     end
   end

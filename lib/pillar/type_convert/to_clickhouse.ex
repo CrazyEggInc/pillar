@@ -1,12 +1,12 @@
 defmodule Pillar.TypeConvert.ToClickhouse do
   @moduledoc false
-  def convert(param) when is_list(param) do
-    if Keyword.keyword?(param) && !Enum.empty?(param) do
-      values =
-        param
-        |> Enum.map(fn {k, v} -> "'#{to_string(k)}':#{convert(v)}" end)
-        |> Enum.join(",")
 
+  # to simplify IP matching
+  defguardp is_in_range(val, start, fin) when is_integer(val) and val >= start and val <= fin
+
+  def convert(param) when is_list(param) do
+    if Keyword.keyword?(param) and not Enum.empty?(param) do
+      values = Enum.map_join(param, ",", fn {k, v} -> "'#{to_string(k)}':#{convert(v)}" end)
       "{#{values}}"
     else
       values = Enum.map_join(param, ",", &convert/1)
@@ -15,25 +15,12 @@ defmodule Pillar.TypeConvert.ToClickhouse do
     end
   end
 
-  def convert(nil) do
-    "NULL"
-  end
-
-  def convert(param) when is_integer(param) do
-    Integer.to_string(param)
-  end
-
+  def convert(nil), do: "NULL"
+  def convert(param) when is_integer(param), do: Integer.to_string(param)
   def convert(true), do: "1"
-
   def convert(false), do: "0"
-
-  def convert(param) when is_atom(param) do
-    Atom.to_string(param)
-  end
-
-  def convert(param) when is_float(param) do
-    Float.to_string(param)
-  end
+  def convert(param) when is_atom(param), do: Atom.to_string(param)
+  def convert(param) when is_float(param), do: Float.to_string(param)
 
   def convert(%DateTime{} = datetime) do
     datetime
@@ -50,15 +37,13 @@ defmodule Pillar.TypeConvert.ToClickhouse do
   end
 
   def convert(param) when is_map(param) do
-    json = Jason.encode!(param)
+    json = JSON.encode!(param)
     convert(json)
   end
 
   def convert({a, b, c, d} = ip)
-      when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) and
-             a >= 0 and
-             a <= 255 and b >= 0 and b <= 255 and c >= 0 and
-             c <= 255 and d >= 0 and d <= 255 do
+      when is_in_range(a, 0, 255) and is_in_range(b, 0, 255) and
+             is_in_range(c, 0, 255) and is_in_range(d, 0, 255) do
     ip
     |> :inet.ntoa()
     |> to_string
@@ -66,16 +51,9 @@ defmodule Pillar.TypeConvert.ToClickhouse do
   end
 
   def convert({a, b, c, d, e, f, g, h} = ip)
-      when is_integer(a) and is_integer(b) and is_integer(c) and is_integer(d) and is_integer(e) and
-             is_integer(f) and is_integer(g) and is_integer(h) and a >= 0 and
-             a <= 65535 and
-             b >= 0 and b <= 65535 and
-             c >= 0 and c <= 65535 and
-             d >= 0 and d <= 65535 and
-             e >= 0 and e <= 65535 and
-             f >= 0 and f <= 65535 and
-             g >= 0 and g <= 65535 and
-             h >= 0 and h <= 65535 do
+      when is_in_range(a, 0, 65_535) and is_in_range(b, 0, 65_535) and is_in_range(c, 0, 65_535) and
+             is_in_range(d, 0, 65_535) and is_in_range(e, 0, 65_535) and is_in_range(f, 0, 65_535) and
+             is_in_range(g, 0, 65_535) and is_in_range(h, 0, 65_535) do
     ip
     |> :inet.ntoa()
     |> to_string

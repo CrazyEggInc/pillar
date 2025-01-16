@@ -1,5 +1,6 @@
 defmodule Pillar.Migrations.RollbackTest do
   use ExUnit.Case
+
   alias Pillar.Migrations
   alias Pillar.Migrations.Rollback
   alias Pillar.Connection
@@ -50,10 +51,10 @@ defmodule Pillar.Migrations.RollbackTest do
     assert {:error, %Response{body: body4}} =
              Pillar.query(conn, "select count(*) from example_table4")
 
-    assert body =~ ~r/example_table doesn\'t exist/
-    assert body2 =~ ~r/example_table2 doesn\'t exist/
-    assert body3 =~ ~r/example_table3 doesn\'t exist/
-    assert body4 =~ ~r/example_table4 doesn\'t exist/
+    assert body =~ ~r/Unknown table expression identifier 'example_table'/
+    assert body2 =~ ~r/Unknown table expression identifier 'example_table2'/
+    assert body3 =~ ~r/Unknown table expression identifier 'example_table3'/
+    assert body4 =~ ~r/Unknown table expression identifier 'example_table4'/
   end
 
   test "#list_of_success_migrations", %{conn: conn} do

@@ -10,7 +10,7 @@ defmodule Pillar.MixProject do
       name: "Pillar",
       aliases: aliases(),
       version: @version,
-      elixir: "~> 1.9",
+      elixir: "~> 1.18",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
@@ -30,24 +30,22 @@ defmodule Pillar.MixProject do
     ]
   end
 
-  def application do
-    [
-      extra_applications: []
-    ]
-  end
+  def application, do: [extra_applications: []]
 
   defp deps do
     [
-      {:jason, ">= 1.0.0"},
-      {:tesla, ">= 1.4.0"},
-      {:mint, ">= 1.4.0"},
-      {:castore, ">= 0.1.0"},
+      {:tesla, "~> 1.13"},
+      {:mint, "~> 1.6"},
+      {:castore, "~> 1.0"},
       {:poolboy, "~> 1.5"},
-      {:decimal, ">= 1.0.0"},
+      {:decimal, "~> 2.3"},
+
+      # testing and development
       {:tzdata, "~> 1.1", only: [:dev, :test]},
-      {:credo, "~> 1.1.0", only: [:dev, :test], runtime: false},
-      {:ex_doc, ">= 0.21.0", only: [:dev], runtime: false},
-      {:excoveralls, ">= 0.12.2", only: [:test], runtime: false}
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
+      {:ex_check, "~> 0.16", only: [:dev, :test], runtime: false},
+      {:ex_doc, "~> 0.36", only: [:dev], runtime: false},
+      {:excoveralls, "~> 0.18", only: [:test], runtime: false}
     ]
   end
 

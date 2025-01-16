@@ -12,23 +12,23 @@ defmodule Pillar.HttpClientTest do
     end
 
     test "System.get_env(PILLAR_HTTP_ADAPTER) sets adapter" do
-      if value = System.get_env("PILLAR_HTTP_ADAPTER") != nil do
-        if value == "HttpcAdapter" do
-          assert HttpClient.adapter() == Pillar.HttpClient.HttpcAdapter
-        end
+      value = System.get_env("PILLAR_HTTP_ADAPTER")
 
-        if value == "TeslaMintAdapter" do
+      case value do
+        nil ->
+          nil
+
+        "HttpcAdapter" ->
+          assert HttpClient.adapter() == Pillar.HttpClient.HttpcAdapter
+
+        "TeslaMintAdapter" ->
           assert HttpClient.adapter() == Pillar.HttpClient.TeslaMintAdapter
-        end
       end
     end
   end
 
   test "#post - econnrefused transport error" do
-    assert %TransportError{
-             reason: reason
-           } = HttpClient.post("http://localhost:1234")
-
+    assert %TransportError{reason: reason} = HttpClient.post("http://localhost:1234")
     assert inspect(reason) =~ "econnrefused"
   end
 
