@@ -34,8 +34,8 @@ defmodule Pillar.MixProject do
 
   defp deps do
     [
-      {:tesla, "~> 1.13"},
-      {:mint, "~> 1.6"},
+      {:tesla, "~> 1.14"},
+      {:mint, "~> 1.7"},
       {:castore, "~> 1.0"},
       {:poolboy, "~> 1.5"},
       {:decimal, "~> 2.3"},
@@ -44,7 +44,7 @@ defmodule Pillar.MixProject do
       {:tzdata, "~> 1.1", only: [:dev, :test]},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:ex_check, "~> 0.16", only: [:dev, :test], runtime: false},
-      {:ex_doc, "~> 0.36", only: [:dev], runtime: false},
+      {:ex_doc, "~> 0.37", only: [:dev], runtime: false},
       {:excoveralls, "~> 0.18", only: [:test], runtime: false}
     ]
   end
