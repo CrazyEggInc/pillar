@@ -1,6 +1,8 @@
 defmodule PillarTest do
   use ExUnit.Case
+
   doctest Pillar
+
   alias Pillar.Connection
 
   require Logger

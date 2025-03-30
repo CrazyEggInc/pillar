@@ -22,9 +22,6 @@ defmodule Pillar.MixProject do
         "coveralls.post": :test,
         "coveralls.html": :test
       ],
-      dialyzer: [
-        plt_add_deps: :transitive
-      ],
       homepage_url: @source_url,
       docs: docs()
     ]

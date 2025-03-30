@@ -10,15 +10,15 @@
 Elixir client for [ClickHouse](https://clickhouse.tech/), a fast open-source
 Online Analytical Processing (OLAP) database management system.
 
-# Features
+## Features
 
-  - [Direct Usage with connection structure](#direct-usage-with-connection-structure)
-  - [Pool of workers](#pool-of-workers)
-  - [Async insert](#async-insert)
-  - [Buffer for periodical bulk inserts](#buffer-for-periodical-bulk-inserts)
-  - [Migrations](#migrations)
-  - [DateTime Timezones](#timezones)
-  - [Switching between HTTP adapters](#http-adapters)
+- [Direct Usage with connection structure](#direct-usage-with-connection-structure)
+- [Pool of workers](#pool-of-workers)
+- [Async insert](#async-insert)
+- [Buffer for periodical bulk inserts](#buffer-for-periodical-bulk-inserts)
+- [Migrations](#migrations)
+- [DateTime Timezones](#timezones)
+- [Switching between HTTP adapters](#http-adapters)
 
 ## Usage
 
@@ -37,7 +37,6 @@ params = %{lastname: "Smith"}
 
 result
 #=> [%{"count(*)" => 347}]
-
 ```
 
 ### Pool of workers
@@ -114,7 +113,6 @@ end
 
 *on_errors* parameter allows you to catch any error of bulk insert (for example: one of batch is bad or clickhouse was not available )
 
-
 ### Migrations
 
 Migrations can be generated with mix task `mix pillar.gen.migration migration_name`.
@@ -163,19 +161,19 @@ In order to be able to use Timezones add timezones database to your project and 
 config :elixir, :time_zone_database, Tzdata.TimeZoneDatabase
 ```
 
-Details here https://hexdocs.pm/elixir/1.12/DateTime.html#module-time-zone-database
+Details here <https://hexdocs.pm/elixir/1.12/DateTime.html#module-time-zone-database>
 
 ### HTTP Adapters
 
 If you have problems with default Pillar HTTP Adapter (Mint over Tesla), you can use alternative one, based on :httpc or define your own and pass it
 through config.
 
-```
+```elixir
 config :pillar, Pillar.HttpClient, http_adapter: Pillar.HttpClient.TeslaMintAdapter
 ```
 
 Adapter should define one function `post/3` and return 2 possible results (`%Pillar.HttpClient.Response{}`, `%Pillar.HttpClient.TransportError{}`)
 
-# Contribution
+## Contribution
 
 Feel free to make a pull request. All contributions are appreciated!

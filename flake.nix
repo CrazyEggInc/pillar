@@ -14,16 +14,9 @@
       perSystem =
         { pkgs, ... }:
         let
-          beamPackages = pkgs.beam_minimal.packages.erlang_27;
+          beamPackages = pkgs.beam.packages.erlang_27;
           erlang = beamPackages.erlang;
           elixir = beamPackages.elixir_1_18;
-
-          fetchMixDeps = beamPackages.fetchMixDeps.override {
-            inherit elixir;
-          };
-          mixRelease = beamPackages.mixRelease.override {
-            inherit erlang elixir fetchMixDeps;
-          };
         in
         {
           devShells = {
@@ -31,11 +24,6 @@
               packages = with pkgs; [
                 erlang
                 elixir
-
-                # tools
-                (elixir_ls.override {
-                  inherit elixir fetchMixDeps mixRelease;
-                })
               ];
               env = {
                 ERL_AFLAGS = "+pc unicode -kernel shell_history enabled";
