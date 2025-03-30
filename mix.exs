@@ -8,9 +8,8 @@ defmodule Pillar.MixProject do
     [
       app: :pillar,
       name: "Pillar",
-      aliases: aliases(),
       version: @version,
-      elixir: "~> 1.18",
+      elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       test_coverage: [tool: ExCoveralls],
@@ -55,19 +54,10 @@ defmodule Pillar.MixProject do
 
   defp package do
     [
-      # This option is only needed when you don't want to use the OTP application name
       name: "pillar",
-      # These are the default files included in the package
       files: ~w(lib .formatter.exs mix.exs README*),
       licenses: ["MIT"],
-      links: %{"GitHub" => "https://github.com/balance-platform/pillar"}
-    ]
-  end
-
-  defp aliases do
-    [
-      test: ["format --check-formatted", "test"],
-      check_code: ["credo", "format", "dialyzer"]
+      links: %{"GitHub" => @source_url}
     ]
   end
 
