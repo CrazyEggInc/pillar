@@ -10,7 +10,6 @@ on:
       - master
     types: [opened, synchronize, closed]
 
-
 permissions:
   contents: read
 
@@ -76,7 +75,7 @@ jobs:
         mix deps.get
         mix compile
         mix format --check-formatted
-        
+
     - name: Run tests
       run: mix test
       env:
