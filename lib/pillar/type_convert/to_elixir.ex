@@ -123,9 +123,11 @@ defmodule Pillar.TypeConvert.ToElixir do
              "Int8",
              "Int16",
              "Int32",
+             "Int64",
              "UInt8",
              "UInt16",
-             "UInt32"
+             "UInt32",
+             "UInt64"
            ] and is_integer(value) do
     value
   end
